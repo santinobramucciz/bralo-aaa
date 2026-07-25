@@ -44,7 +44,7 @@ export async function sendNewOrderEmail(params: SendOrderEmailParams) {
 
   await resend.emails.send({
     from: "BraLo <onboarding@resend.dev>",
-    to: "bralo.store@gmail.com",
+    to: "santinobramucciz@gmail.com",
     subject: `[BraLo] Nuevo pedido #${orderNumber}`,
     html,
   });
