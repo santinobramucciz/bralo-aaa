@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { generateOrderNumber } from "@/lib/utils";
+import { sendNewOrderEmail } from "@/lib/email";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -89,6 +90,18 @@ export async function POST(req: NextRequest) {
         orderId: order.id,
       },
     });
+
+    try {
+      await sendNewOrderEmail({
+        orderNumber,
+        customerName,
+        customerEmail,
+        items: order.items.map((i) => ({ name: i.productName, qty: i.quantity, priceEUR: i.priceEUR })),
+        totalEUR: total,
+      });
+    } catch (e) {
+      console.error("Error enviando email:", e);
+    }
 
     return NextResponse.json(order, { status: 201 });
   } catch (error: any) {
