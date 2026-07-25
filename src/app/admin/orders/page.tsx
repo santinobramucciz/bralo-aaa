@@ -17,7 +17,7 @@ interface Order {
   status: string;
   paymentStatus: string;
   createdAt: string;
-  items: { productName: string; quantity: number; priceEUR: number; productId: string | null }[];
+  items: { productName: string; quantity: number; priceEUR: number; productId: string | null; sourceUrl: string | null }[];
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -162,7 +162,16 @@ export default function AdminOrdersPage() {
                 {selectedOrder.items.map((item, i) => (
                   <div key={i} className="flex justify-between text-sm py-1">
                     <span className="text-gray-600">{item.productName} x{item.quantity}</span>
-                    <span className="font-medium">{(item.priceEUR * item.quantity).toFixed(2)} EUR</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{(item.priceEUR * item.quantity).toFixed(2)} EUR</span>
+                      {item.sourceUrl && (
+                        <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer"
+                          className="text-xs text-orange-500 hover:text-orange-600 underline"
+                          onClick={e => e.stopPropagation()}>
+                          AliExpress
+                        </a>
+                      )}
+                    </div>
                   </div>
                 ))}
                 <div className="border-t border-gray-100 mt-2 pt-2 flex justify-between font-bold">
@@ -173,15 +182,19 @@ export default function AdminOrdersPage() {
 
               {selectedOrder.status === "pending" && (
                 <div className="border-t border-gray-100 pt-4 space-y-2">
-                  <a
-                    href={`https://es.aliexpress.com/wholesale?SearchText=${encodeURIComponent(selectedOrder.items.map(i => i.productName).join(" "))}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition-colors"
-                  >
-                    Comprar en AliExpress
-                  </a>
-                  <p className="text-xs text-gray-400 text-center">Busca el producto en AliEnemies y compralo con el dinero del cliente</p>
+                  {selectedOrder.items.map((item, i) => (
+                    item.sourceUrl && (
+                      <a key={i}
+                        href={item.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition-colors"
+                      >
+                        Comprar "{item.productName}" en AliExpress
+                      </a>
+                    )
+                  ))}
+                  <p className="text-xs text-gray-400 text-center">Compra cada producto en su enlace de AliExpress con la dirección del cliente</p>
                 </div>
               )}
 

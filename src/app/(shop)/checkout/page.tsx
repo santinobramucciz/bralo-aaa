@@ -12,6 +12,7 @@ interface CartItem {
     name: string;
     priceEUR: number;
     imageUrl: string;
+    sourceUrl: string | null;
   };
 }
 
@@ -62,6 +63,7 @@ export default function CheckoutPage() {
             productId: item.productId,
             productName: item.product.name,
             productImage: item.product.imageUrl,
+            sourceUrl: item.product.sourceUrl,
             quantity: item.quantity,
             priceEUR: item.product.priceEUR,
           })),

@@ -92,6 +92,7 @@ model OrderItem {
   productId     String?
   productName   String
   productImage  String?
+  sourceUrl     String?
   quantity      Int       @default(1)
   priceEUR      Float
   totalEUR      Float

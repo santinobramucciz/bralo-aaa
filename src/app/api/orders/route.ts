@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
             productId: item.productId,
             productName: item.productName,
             productImage: item.productImage || null,
+            sourceUrl: item.sourceUrl || null,
             quantity: item.quantity,
             priceEUR: item.priceEUR,
             totalEUR: item.priceEUR * item.quantity,
