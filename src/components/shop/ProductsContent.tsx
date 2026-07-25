@@ -17,7 +17,7 @@ interface Product {
   stock: number;
 }
 
-const CATEGORIES = ["Tecnología", "Hogar", "Fitness", "Belleza", "Moda", "Mascotas", "Cocina", "Oficina", "Juguetes", " IA y Software"];
+const CATEGORIES = ["Tecnología", "Hogar", "Fitness", "Belleza", "Moda", "Mascotas", "Cocina", "Oficina", "Juguetes", "Electrónica"];
 
 export default function ProductsContent({ initialCategory, initialSearch }: { initialCategory: string; initialSearch: string }) {
   const [products, setProducts] = useState<Product[]>([]);
