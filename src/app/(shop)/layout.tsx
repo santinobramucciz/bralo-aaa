@@ -32,7 +32,7 @@ function Header() {
           <nav className="hidden md:flex items-center gap-8">
             <Link href="/" className="text-gray-600 hover:text-bralo-600 font-medium transition-colors">Inicio</Link>
             <Link href="/products" className="text-gray-600 hover:text-bralo-600 font-medium transition-colors">Productos</Link>
-            <Link href="/products?category=IA y Software" className="text-gray-600 hover:text-bralo-600 font-medium transition-colors">IA & Tech</Link>
+            <Link href="/products?category=Tecnología" className="text-gray-600 hover:text-bralo-600 font-medium transition-colors">Tecnología</Link>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ function Footer() {
               </div>
               <span className="text-white font-bold text-lg">BraLo</span>
             </div>
-            <p className="text-sm">Tu tienda online gestionada por inteligencia artificial. Productos de calidad, precios justos.</p>
+            <p className="text-sm">Tu tienda online de confianza. Productos de calidad, precios justos y envio rapido.</p>
           </div>
           <div>
             <h3 className="text-white font-semibold mb-3">Tienda</h3>
@@ -109,13 +109,13 @@ function Footer() {
               <li><Link href="/products" className="hover:text-white transition-colors">Todos los productos</Link></li>
               <li><Link href="/products?category=Tecnología" className="hover:text-white transition-colors">Tecnología</Link></li>
               <li><Link href="/products?category=Hogar" className="hover:text-white transition-colors">Hogar</Link></li>
-              <li><Link href="/products?category=IA y Software" className="hover:text-white transition-colors">IA & Software</Link></li>
+              <li><Link href="/products?category=Fitness" className="hover:text-white transition-colors">Fitness</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="text-white font-semibold mb-3">Ayuda</h3>
             <ul className="space-y-2 text-sm">
-              <li><span className="hover:text-white transition-colors cursor-pointer">Envíos</span></li>
+              <li><span className="hover:text-white transition-colors cursor-pointer">Envios</span></li>
               <li><span className="hover:text-white transition-colors cursor-pointer">Devoluciones</span></li>
               <li><span className="hover:text-white transition-colors cursor-pointer">Contacto</span></li>
               <li><span className="hover:text-white transition-colors cursor-pointer">FAQ</span></li>
@@ -125,13 +125,13 @@ function Footer() {
             <h3 className="text-white font-semibold mb-3">Legal</h3>
             <ul className="space-y-2 text-sm">
               <li><span className="hover:text-white transition-colors cursor-pointer">Privacidad</span></li>
-              <li><span className="hover:text-white transition-colors cursor-pointer">Términos</span></li>
+              <li><span className="hover:text-white transition-colors cursor-pointer">Terminos</span></li>
               <li><span className="hover:text-white transition-colors cursor-pointer">Cookies</span></li>
             </ul>
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} BraLo. Todos los derechos reservados. Gestionado por IA.</p>
+          <p>&copy; {new Date().getFullYear()} BraLo. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

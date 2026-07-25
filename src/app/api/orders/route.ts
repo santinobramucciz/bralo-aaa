@@ -81,6 +81,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    await prisma.notification.create({
+      data: {
+        type: "new_order",
+        title: "Nuevo pedido",
+        message: `${customerName} ha hecho un pedido por ${total.toFixed(2)} EUR (${orderNumber}). Tienes que comprar el producto en el proveedor.`,
+        orderId: order.id,
+      },
+    });
+
     return NextResponse.json(order, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Error creando pedido" }, { status: 500 });

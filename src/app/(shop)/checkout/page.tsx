@@ -95,7 +95,7 @@ export default function CheckoutPage() {
         <p className="text-2xl font-bold text-bralo-600 mb-8">{orderNumber}</p>
         <p className="text-gray-500 mb-8">
           Recibirás un email de confirmación en <strong>{form.customerEmail}</strong>.
-          Nuestros agentes de IA procesarán tu pedido automáticamente.
+          Nuestros agentes procesaran tu pedido y lo enviaran lo antes posible.
         </p>
         <button onClick={() => router.push("/")} className="btn-bralo">
           Volver a BraLo
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
                 {submitting ? "Procesando..." : "Confirmar pedido"}
               </button>
               <p className="text-xs text-gray-400 text-center mt-3">
-                Pago contra reembolso. Los agentes de IA de BraLo procesarán tu pedido automáticamente.
+                Pago contra reembolso. Procesaremos tu pedido lo antes posible.
               </p>
             </div>
           </div>

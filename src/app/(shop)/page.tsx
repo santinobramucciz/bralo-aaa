@@ -40,21 +40,21 @@ export default function HomePage() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-1.5 mb-6 text-sm">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              Gestionado 100% por Inteligencia Artificial
+              Envio gratis en pedidos superiores a 50 EUR
             </div>
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
               BraLo
-              <span className="block text-bralo-200 text-2xl md:text-3xl font-medium mt-2">Tu tienda inteligente</span>
+              <span className="block text-bralo-200 text-2xl md:text-3xl font-medium mt-2">Los mejores precios online</span>
             </h1>
             <p className="text-lg text-bralo-200 mb-8 max-w-lg">
-              Productos curados por IA, precios calculados inteligentemente y atención automática. Descubre ofertas que otros no encuentran.
+              Productos seleccionados con los mejores precios del mercado. Calidad garantizada, envio rapido y atencion al cliente 24/7.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/products" className="bg-white text-bralo-700 hover:bg-bralo-50 font-bold py-3 px-8 rounded-lg transition-colors text-lg">
                 Ver productos
               </Link>
-              <Link href="/products?category=IA y Software" className="border-2 border-white/30 hover:border-white text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg">
-                Productos IA
+              <Link href="/products?category=Tecnología" className="border-2 border-white/30 hover:border-white text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg">
+                Tecnologia
               </Link>
             </div>
           </div>
@@ -66,8 +66,8 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <div className="text-2xl font-bold text-bralo-600">IA Activa</div>
-              <div className="text-sm text-gray-500">8 agentes trabajando</div>
+              <div className="text-2xl font-bold text-bralo-600">+200</div>
+              <div className="text-sm text-gray-500">Productos disponibles</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-bralo-600">EUR</div>
@@ -75,11 +75,11 @@ export default function HomePage() {
             </div>
             <div>
               <div className="text-2xl font-bold text-bralo-600">24/7</div>
-              <div className="text-sm text-gray-500">Tienda siempre activa</div>
+              <div className="text-sm text-gray-500">Atencion al cliente</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-bralo-600">Gratis</div>
-              <div className="text-sm text-gray-500">Envío en pedidos +50 EUR</div>
+              <div className="text-sm text-gray-500">Envio en pedidos +50 EUR</div>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Destacados</h2>
-              <p className="text-gray-500 mt-1">Productos seleccionados por nuestra IA</p>
+              <p className="text-gray-500 mt-1">Los productos mas populares de BraLo</p>
             </div>
             <Link href="/products" className="text-bralo-600 hover:text-bralo-700 font-medium text-sm">Ver todos &rarr;</Link>
           </div>
@@ -107,8 +107,8 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Últimos productos</h2>
-            <p className="text-gray-500 mt-1">Recién añadidos por nuestros agentes</p>
+            <h2 className="text-2xl font-bold text-gray-900">Ultimos productos</h2>
+            <p className="text-gray-500 mt-1">Novedades recien llegadas a BraLo</p>
           </div>
           <Link href="/products" className="text-bralo-600 hover:text-bralo-700 font-medium text-sm">Ver todos &rarr;</Link>
         </div>
@@ -134,12 +134,12 @@ export default function HomePage() {
       {/* CTA */}
       <section className="bg-bralo-50 border-t border-bralo-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">¿Todo automatizado?</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Envio gratis a partir de 50 EUR</h2>
           <p className="text-gray-600 mb-6 max-w-lg mx-auto">
-            Sí. BraLo utiliza 8 agentes de IA que buscan productos, calculan precios, publican fichas, crean contenido de marketing y gestionan pedidos automáticamente.
+            Compra con confianza. Si tu pedido supera los 50 EUR, el envio es completamente gratis. Pago contra reembolso disponible.
           </p>
-          <Link href="/admin" className="btn-bralo inline-block">
-            Acceder al Panel Admin
+          <Link href="/products" className="btn-bralo inline-block">
+            Ver productos
           </Link>
         </div>
       </section>
@@ -167,9 +167,9 @@ function ProductCard({ product }: { product: Product }) {
   return (
     <Link href={`/products/${product.slug}`} className="bg-white rounded-xl border border-gray-100 overflow-hidden card-hover block">
       <div className="relative">
-        <div className="aspect-[4/3] bg-gradient-to-br from-bralo-50 to-bralo-100 flex items-center justify-center">
+        <div className="aspect-[4/3] bg-gradient-to-br from-bralo-50 to-bralo-100 flex items-center justify-center overflow-hidden">
           {product.imageUrl ? (
-            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
           ) : (
             <span className="text-4xl font-bold text-bralo-300">{product.name.charAt(0)}</span>
           )}
@@ -192,7 +192,7 @@ function ProductCard({ product }: { product: Product }) {
                 : "bg-bralo-100 text-bralo-700 hover:bg-bralo-600 hover:text-white"
             }`}
           >
-            {added ? "Añadido" : "Añadir"}
+            {added ? "Anadido" : "Anadir"}
           </button>
         </div>
       </div>

@@ -8,11 +8,15 @@ interface Order {
   orderNumber: string;
   customerName: string;
   customerEmail: string;
+  customerPhone: string | null;
+  address: string;
+  city: string;
+  postalCode: string;
   totalEUR: number;
   status: string;
   paymentStatus: string;
   createdAt: string;
-  items: { productName: string; quantity: number; priceEUR: number }[];
+  items: { productName: string; quantity: number; priceEUR: number; productId: string | null }[];
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -147,6 +151,8 @@ export default function AdminOrdersPage() {
               <div className="space-y-2 text-sm">
                 <div><span className="text-gray-500">Cliente:</span> <span className="font-medium">{selectedOrder.customerName}</span></div>
                 <div><span className="text-gray-500">Email:</span> <span className="font-medium">{selectedOrder.customerEmail}</span></div>
+                {selectedOrder.customerPhone && <div><span className="text-gray-500">Tel:</span> <span className="font-medium">{selectedOrder.customerPhone}</span></div>}
+                <div><span className="text-gray-500">Direccion:</span> <span className="font-medium">{selectedOrder.address}, {selectedOrder.postalCode} {selectedOrder.city}</span></div>
                 <div><span className="text-gray-500">Fecha:</span> <span className="font-medium">{new Date(selectedOrder.createdAt).toLocaleString("es-ES")}</span></div>
                 <div><span className="text-gray-500">Pago:</span> <span className="font-medium">{selectedOrder.paymentStatus}</span></div>
               </div>
@@ -163,6 +169,31 @@ export default function AdminOrdersPage() {
                   <span className="text-bralo-600">{selectedOrder.totalEUR.toFixed(2)} EUR</span>
                 </div>
               </div>
+
+              {selectedOrder.status === "pending" && (
+                <div className="border-t border-gray-100 pt-4 space-y-2">
+                  <a
+                    href={`https://es.aliexpress.com/wholesale?SearchText=${encodeURIComponent(selectedOrder.items.map(i => i.productName).join(" "))}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition-colors"
+                  >
+                    Comprar en AliExpress
+                  </a>
+                  <p className="text-xs text-gray-400 text-center">Busca el producto en AliEnemies y compralo con el dinero del cliente</p>
+                </div>
+              )}
+
+              {selectedOrder.status === "confirmed" && (
+                <div className="border-t border-gray-100 pt-4">
+                  <button
+                    onClick={() => updateStatus(selectedOrder.id, "shipped")}
+                    className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition-colors"
+                  >
+                    Marcar como enviado
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="bg-white rounded-xl border border-gray-100 p-6 text-center text-gray-400">
