@@ -7,8 +7,9 @@ interface Order {
   id: string;
   orderNumber: string;
   customerName: string;
+  customerLastName: string;
   customerEmail: string;
-  customerPhone: string | null;
+  customerPhone: string;
   address: string;
   city: string;
   postalCode: string;
@@ -114,7 +115,7 @@ export default function AdminOrdersPage() {
                         <p className="text-xs text-gray-500">{new Date(o.createdAt).toLocaleDateString("es-ES")}</p>
                       </td>
                       <td className="px-4 py-3">
-                        <p className="font-medium text-gray-900">{o.customerName}</p>
+                        <p className="font-medium text-gray-900">{o.customerName} {o.customerLastName}</p>
                         <p className="text-xs text-gray-500">{o.customerEmail}</p>
                       </td>
                       <td className="px-4 py-3 text-right font-bold text-bralo-600">{o.totalEUR.toFixed(2)} EUR</td>
@@ -149,9 +150,9 @@ export default function AdminOrdersPage() {
             <div className="bg-white rounded-xl border border-gray-100 p-6 sticky top-24 space-y-4">
               <h3 className="font-bold text-gray-900">{selectedOrder.orderNumber}</h3>
               <div className="space-y-2 text-sm">
-                <div><span className="text-gray-500">Cliente:</span> <span className="font-medium">{selectedOrder.customerName}</span></div>
+                <div><span className="text-gray-500">Cliente:</span> <span className="font-medium">{selectedOrder.customerName} {selectedOrder.customerLastName}</span></div>
                 <div><span className="text-gray-500">Email:</span> <span className="font-medium">{selectedOrder.customerEmail}</span></div>
-                {selectedOrder.customerPhone && <div><span className="text-gray-500">Tel:</span> <span className="font-medium">{selectedOrder.customerPhone}</span></div>}
+                <div><span className="text-gray-500">Tel:</span> <span className="font-medium">{selectedOrder.customerPhone}</span></div>
                 <div><span className="text-gray-500">Direccion:</span> <span className="font-medium">{selectedOrder.address}, {selectedOrder.postalCode} {selectedOrder.city}</span></div>
                 <div><span className="text-gray-500">Fecha:</span> <span className="font-medium">{new Date(selectedOrder.createdAt).toLocaleString("es-ES")}</span></div>
                 <div><span className="text-gray-500">Pago:</span> <span className="font-medium">{selectedOrder.paymentStatus}</span></div>

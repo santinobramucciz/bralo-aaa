@@ -5,13 +5,18 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 interface SendOrderEmailParams {
   orderNumber: string;
   customerName: string;
+  customerLastName: string;
   customerEmail: string;
+  customerPhone: string;
+  address: string;
+  city: string;
+  postalCode: string;
   items: { name: string; qty: number; priceEUR: number }[];
   totalEUR: number;
 }
 
 export async function sendNewOrderEmail(params: SendOrderEmailParams) {
-  const { orderNumber, customerName, customerEmail, items, totalEUR } = params;
+  const { orderNumber, customerName, customerLastName, customerEmail, customerPhone, address, city, postalCode, items, totalEUR } = params;
 
   const itemsHtml = items
     .map((i) => `<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.priceEUR.toFixed(2)} EUR</td></tr>`)
@@ -24,8 +29,10 @@ export async function sendNewOrderEmail(params: SendOrderEmailParams) {
       </div>
       <div style="padding:20px;background:#f9f9f9;">
         <h2>Pedido #${orderNumber}</h2>
-        <p><strong>Cliente:</strong> ${customerName}</p>
+        <p><strong>Cliente:</strong> ${customerName} ${customerLastName}</p>
         <p><strong>Email:</strong> ${customerEmail}</p>
+        <p><strong>Teléfono:</strong> ${customerPhone}</p>
+        <p><strong>Dirección:</strong> ${address}, ${postalCode} ${city}</p>
         <table style="width:100%;border-collapse:collapse;margin:15px 0;">
           <thead>
             <tr style="background:#1a1a2e;color:white;">

@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { customerName, customerEmail, customerPhone, address, city, postalCode, country, notes, items } = body;
+    const { customerName, customerLastName, customerEmail, customerPhone, address, city, postalCode, country, notes, items } = body;
 
     const subtotal = items.reduce((sum: number, item: any) => sum + item.priceEUR * item.quantity, 0);
     const shipping = subtotal >= 50 ? 0 : 4.99;
@@ -40,8 +40,9 @@ export async function POST(req: NextRequest) {
       data: {
         orderNumber,
         customerName,
+        customerLastName,
         customerEmail,
-        customerPhone: customerPhone || null,
+        customerPhone,
         address,
         city,
         postalCode,
@@ -86,7 +87,7 @@ export async function POST(req: NextRequest) {
       data: {
         type: "new_order",
         title: "Nuevo pedido",
-        message: `${customerName} ha hecho un pedido por ${total.toFixed(2)} EUR (${orderNumber}). Tienes que comprar el producto en el proveedor.`,
+        message: `${customerName} ${customerLastName} ha hecho un pedido por ${total.toFixed(2)} EUR (${orderNumber}). Tienes que comprar el producto en el proveedor.`,
         orderId: order.id,
       },
     });
@@ -95,7 +96,12 @@ export async function POST(req: NextRequest) {
       await sendNewOrderEmail({
         orderNumber,
         customerName,
+        customerLastName,
         customerEmail,
+        customerPhone,
+        address,
+        city,
+        postalCode,
         items: order.items.map((i) => ({ name: i.productName, qty: i.quantity, priceEUR: i.priceEUR })),
         totalEUR: total,
       });
