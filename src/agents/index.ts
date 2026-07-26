@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
 import { compareAllPlatforms, PlatformResult } from "@/lib/platform-search";
+import { runFotografo } from "./fotografo";
 
 interface AgentResult {
   agent: string;
@@ -529,6 +530,9 @@ Sistema operativo y saludable.
 export async function runDailyPipeline() {
   console.log("[BraLo] Iniciando pipeline diario...");
 
+  const fotografoResult = await runFotografo();
+  console.log(`[BraLo] Fotografo: ${(fotografoResult.data?.output?.updated || 0)} productos con imagenes actualizadas`);
+
   const buscadorResult = await runBuscador();
   const foundProducts = buscadorResult.data?.output?.products || [];
   console.log(`[BraLo] Buscador: ${foundProducts.length} productos encontrados`);
@@ -584,7 +588,7 @@ export async function runDailyPipeline() {
     totalOrders: todayOrders._count,
     messagesHandled: 0,
     marketingPosts,
-    incidents: [buscadorResult, comparadorResult, validadorResult, preciosResult, publicadorResult, marketingResult, operacionesResult]
+    incidents: [fotografoResult, buscadorResult, comparadorResult, validadorResult, preciosResult, publicadorResult, marketingResult, operacionesResult]
       .filter(r => !r.success).length,
   };
 
@@ -592,6 +596,7 @@ export async function runDailyPipeline() {
   console.log(`[BraLo] Supervisor: reporte generado`);
 
   return {
+    fotografo: fotografoResult,
     buscador: buscadorResult,
     comparador: comparadorResult,
     validador: validadorResult,

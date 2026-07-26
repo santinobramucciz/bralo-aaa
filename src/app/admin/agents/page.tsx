@@ -14,6 +14,7 @@ interface AgentLog {
 }
 
 const AGENT_INFO: Record<string, { icon: string; label: string; color: string }> = {
+  fotografo: { icon: "📸", label: "Fotografo de productos", color: "bg-rose-100 text-rose-700" },
   buscador: { icon: "🔍", label: "Buscador de productos", color: "bg-blue-100 text-blue-700" },
   comparador: { icon: "⚖️", label: "Comparador de plataformas", color: "bg-orange-100 text-orange-700" },
   validador: { icon: "✅", label: "Validador de productos", color: "bg-green-100 text-green-700" },
@@ -55,6 +56,19 @@ export default function AdminAgentsPage() {
     setRunning(false);
   };
 
+  const runFotografo = async () => {
+    setRunning(true);
+    try {
+      const res = await fetch("/api/agents/fotografo", { method: "POST" });
+      const data = await res.json();
+      alert(`Fotografo completado!\n${data.output?.updated || 0} productos con imagenes actualizadas`);
+      fetchLogs();
+    } catch {
+      alert("Error ejecutando Fotografo");
+    }
+    setRunning(false);
+  };
+
   const filtered = filter ? logs.filter(l => l.agent === filter) : logs;
 
   return (
@@ -64,6 +78,10 @@ export default function AdminAgentsPage() {
         <button onClick={runPipeline} disabled={running} className="btn-bralo flex items-center gap-2 disabled:opacity-50">
           <span className="text-lg">🤖</span>
           {running ? "Ejecutando pipeline..." : "Ejecutar pipeline completo"}
+        </button>
+        <button onClick={runFotografo} disabled={running} className="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 text-sm font-medium">
+          <span className="text-lg">📸</span>
+          {running ? "Buscando imagenes..." : "Buscar imagenes reales"}
         </button>
         <select value={filter} onChange={e => setFilter(e.target.value)} className="border border-gray-200 rounded-lg px-3 py-2 text-sm">
           <option value="">Todos los agentes</option>
