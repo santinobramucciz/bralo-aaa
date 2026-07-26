@@ -15,6 +15,7 @@ interface AgentLog {
 
 const AGENT_INFO: Record<string, { icon: string; label: string; color: string }> = {
   buscador: { icon: "🔍", label: "Buscador de productos", color: "bg-blue-100 text-blue-700" },
+  comparador: { icon: "⚖️", label: "Comparador de plataformas", color: "bg-orange-100 text-orange-700" },
   validador: { icon: "✅", label: "Validador de productos", color: "bg-green-100 text-green-700" },
   precios: { icon: "💰", label: "Agente de precios", color: "bg-yellow-100 text-yellow-700" },
   publicador: { icon: "📝", label: "Agente publicador", color: "bg-purple-100 text-purple-700" },

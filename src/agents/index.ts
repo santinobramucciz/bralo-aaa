@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
+import { compareAllPlatforms, PlatformResult } from "@/lib/platform-search";
 
 interface AgentResult {
   agent: string;
@@ -420,6 +421,54 @@ export async function runOperaciones(): Promise<AgentResult> {
   }
 }
 
+export async function runComparador(products: any[]): Promise<AgentResult> {
+  const start = Date.now();
+  try {
+    const comparisons = [];
+
+    for (const product of products) {
+      const { bestDeal, allResults } = await compareAllPlatforms(product.name);
+
+      if (bestDeal) {
+        comparisons.push({
+          productName: product.name,
+          winningPlatform: bestDeal.platform,
+          winningPrice: bestDeal.totalCost,
+          winningImageUrl: bestDeal.imageUrl,
+          winningProductUrl: bestDeal.productUrl,
+          allPlatforms: allResults.map((r: PlatformResult) => ({
+            platform: r.platform,
+            price: r.totalCost,
+            url: r.productUrl,
+          })),
+          originalPrice: product.price,
+          savings: +(product.price - bestDeal.totalCost).toFixed(2),
+        });
+      }
+    }
+
+    const result: AgentResult = {
+      agent: "comparador",
+      action: "comparar_plataformas",
+      success: true,
+      data: {
+        input: { products: products.length, platforms: ["AliExpress", "Amazon", "Temu", "Hipobuy"] },
+        output: { compared: comparisons.length, comparisons },
+      },
+      durationMs: Date.now() - start,
+    };
+    await logAgent(result);
+    return result;
+  } catch (error: any) {
+    const result: AgentResult = {
+      agent: "comparador", action: "comparar_plataformas", success: false,
+      error: error.message, durationMs: Date.now() - start,
+    };
+    await logAgent(result);
+    return result;
+  }
+}
+
 export async function runSupervisor(dailyStats: any): Promise<AgentResult> {
   const start = Date.now();
   try {
@@ -484,7 +533,25 @@ export async function runDailyPipeline() {
   const foundProducts = buscadorResult.data?.output?.products || [];
   console.log(`[BraLo] Buscador: ${foundProducts.length} productos encontrados`);
 
-  const validadorResult = await runValidador(foundProducts);
+  const comparadorResult = await runComparador(foundProducts);
+  const comparisons = comparadorResult.data?.output?.comparisons || [];
+  console.log(`[BraLo] Comparador: ${comparisons.length} productos comparados en 4 plataformas`);
+
+  const enrichedProducts = foundProducts.map((p: any) => {
+    const comparison = comparisons.find((c: any) => c.productName === p.name);
+    if (comparison) {
+      return {
+        ...p,
+        cost: comparison.winningPrice,
+        imageUrl: comparison.winningImageUrl || p.imageUrl,
+        sourceUrl: comparison.winningProductUrl,
+        source: comparison.winningPlatform,
+      };
+    }
+    return p;
+  });
+
+  const validadorResult = await runValidador(enrichedProducts);
   const approvedProducts = validadorResult.data?.output?.products || [];
   console.log(`[BraLo] Validador: ${approvedProducts.length} productos aprobados`);
 
@@ -517,7 +584,7 @@ export async function runDailyPipeline() {
     totalOrders: todayOrders._count,
     messagesHandled: 0,
     marketingPosts,
-    incidents: [buscadorResult, validadorResult, preciosResult, publicadorResult, marketingResult, operacionesResult]
+    incidents: [buscadorResult, comparadorResult, validadorResult, preciosResult, publicadorResult, marketingResult, operacionesResult]
       .filter(r => !r.success).length,
   };
 
@@ -526,6 +593,7 @@ export async function runDailyPipeline() {
 
   return {
     buscador: buscadorResult,
+    comparador: comparadorResult,
     validador: validadorResult,
     precios: preciosResult,
     publicador: publicadorResult,
